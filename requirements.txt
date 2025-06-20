@@ -3,3 +3,4 @@ flask-cors
 rembg
 pillow
 gunicorn
+onnxruntime
