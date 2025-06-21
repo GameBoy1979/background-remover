@@ -9,6 +9,10 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "✅ Background Remover API is running!", 200
+
 @app.route('/remove-bg', methods=['POST'])
 def remove_background():
     files = request.files.getlist('images')
