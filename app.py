@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def home():
     return "✅ Background Remover API is running!"
 
@@ -33,6 +33,7 @@ def remove_background():
     return send_file(zip_buffer, as_attachment=True, download_name="output.zip", mimetype="application/zip")
 
 if __name__ == "__main__":
+    # 🔴 This must use the port from Render (do NOT hardcode 5000!)
     port = int(os.environ.get("PORT", 10000))
-    print(f"✅ App starting on port {port}")
+    print(f"✅ Flask app starting on 0.0.0.0:{port}")
     app.run(host="0.0.0.0", port=port)
