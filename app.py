@@ -11,27 +11,28 @@ CORS(app)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "✅ Background Remover API is running!", 200
+    return "✅ Background Remover API is running!"
 
-@app.route('/remove-bg', methods=['POST'])
+@app.route("/remove-bg", methods=["POST"])
 def remove_background():
-    files = request.files.getlist('images')
+    files = request.files.getlist("images")
     if not files:
         return {"error": "No files provided."}, 400
 
     zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
         for file in files:
             img = Image.open(file.stream).convert("RGBA")
             output = remove(img)
             output_io = io.BytesIO()
             output.save(output_io, format="PNG")
             output_io.seek(0)
-            zip_file.writestr(file.filename.rsplit('.', 1)[0] + '_no_bg.png', output_io.read())
+            zip_file.writestr(file.filename.rsplit(".", 1)[0] + "_no_bg.png", output_io.read())
 
     zip_buffer.seek(0)
-    return send_file(zip_buffer, as_attachment=True, download_name='output.zip', mimetype='application/zip')
+    return send_file(zip_buffer, as_attachment=True, download_name="output.zip", mimetype="application/zip")
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    print(f"🚀 Starting on port {port}")
+    app.run(host="0.0.0.0", port=port)
